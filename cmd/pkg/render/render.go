@@ -5,7 +5,7 @@ import (
 	"html/template"
 	"log"
 	"myapp/cmd/pkg/config"
-	"myapp/cmd/pkg/handlers"
+	"myapp/cmd/pkg/models"
 	"net/http"
 	"path/filepath"
 )
@@ -17,8 +17,14 @@ func NewTemplates(a *config.AppConfig) {
 	app = a
 }
 
+func AddDefaultData(td *models.TemplateData) *models.TemplateData {
+	//
+	
+	return td
+}
+
 // RenderTemplate renders tesmplats using html/template
-func RenderTemplate(w http.ResponseWriter, tmpl string, td handlers.TemplateData) {
+func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
 	var tc map[string]*template.Template
 	// get template cache from app config or create new
 	if app.UseCache {
@@ -35,7 +41,10 @@ func RenderTemplate(w http.ResponseWriter, tmpl string, td handlers.TemplateData
 
 	// extra error check
 	buf := new(bytes.Buffer)
-	err := t.Execute(buf, nil)
+
+	td = AddDefaultData(td)
+
+	err := t.Execute(buf, td)
 	if err != nil {
 		log.Println(err)
 	}
