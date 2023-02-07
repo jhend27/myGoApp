@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"log"
 	"myapp/cmd/pkg/config"
+	"myapp/cmd/pkg/handlers"
 	"net/http"
 	"path/filepath"
 )
@@ -17,9 +18,9 @@ func NewTemplates(a *config.AppConfig) {
 }
 
 // RenderTemplate renders tesmplats using html/template
-func RenderTemplate(w http.ResponseWriter, tmpl string) {
+func RenderTemplate(w http.ResponseWriter, tmpl string, td handlers.TemplateData) {
 	var tc map[string]*template.Template
-	// get template cache from app config or create new 
+	// get template cache from app config or create new
 	if app.UseCache {
 		tc = app.TemplateCache
 	} else {
